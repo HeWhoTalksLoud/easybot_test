@@ -56,7 +56,6 @@ https://www.dropbox.com/s/zpvfea8nz3wqtit/java_test.pdf?dl=0
 
 ```
 {
-    "id": "5",
     "serialNumber": "321321",
     "manufacturerId": "1",
     "categoryId": "1",
@@ -70,14 +69,57 @@ https://www.dropbox.com/s/zpvfea8nz3wqtit/java_test.pdf?dl=0
     ]
 }
 ```
+propertyId здесь и далее - уникальный идентификатор свойства в БД.
 
 ![image](https://github.com/HeWhoTalksLoud/easybot_test/assets/119597731/39464fec-d062-47fc-9c23-e7c9892f2b88)
 
+Данные о добавленном товаре передаются в теле HTTP-ответа в JSON-формате, аналогичном данным для сохранения. Пример:
+
+```
+{
+    "id": 8,
+    "serialNumber": "321321",
+    "manufacturer": "Sony",
+    "category": "Настольные компьютеры",
+    "price": 499.99,
+    "quantity": 12,
+    "propertyValueDTOs": [
+        {
+            "property": "Форм-фактор",
+            "value": "38 попугаев"
+        }
+    ]
+}
+```
+
 
 ## Редактирование товара
+Аналогично добавлению товара из пункта выше, но осуществляется PUT-запросом по адресу http://localhost:8080/goods и в JSON в теле запроса также передается уникальный идентификатор редактируемого товара - id (для добавления нового товара указывать идентификатор не нужно, он добавляется СУБД автоматически). Пример:
+
+```
+{
+    "id": "1",
+    "serialNumber": "321321",
+    "manufacturerId": "1",
+    "categoryId": "1",
+    "price": 499.99,
+    "quantity": 12,
+    "propertyValueDTOs": [
+        {
+            "propertyId": "1",
+            "value": "значение"
+        }
+    ]
+}
+```
+
+Данные об измененном  товаре передаются в теле HTTP-ответа аналогично предыдущему пункту.
+
 
 ## Просмотр всех существующих товаров по типу
+Осуществляется GET-запросом вида http://localhost:8080/goods/category/{category_id}, где {category_id} - уникальный идентификатор типа товаров в БД, например, http://localhost:8080/goods/category/1. Полученные данные выводятся в теле HTTP-ответа в JSON-формате.
 
 ## Просмотр товара по идентификатору
+Аналогично предыдущему пункту, но отправляется GET-запрос вида http://localhost:8080/goods/{id}, где {id} - уникальный идентификатор товара в БД, например, http://localhost:8080/goods/1.
 
     
