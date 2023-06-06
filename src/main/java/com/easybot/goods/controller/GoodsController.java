@@ -1,33 +1,51 @@
 package com.easybot.goods.controller;
 
 import com.easybot.goods.dto.ItemDTO;
+import com.easybot.goods.dto.ItemToAddDTO;
+import com.easybot.goods.service.GoodsService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/goods")
+@AllArgsConstructor
 public class GoodsController {
 
-    // todo Добавление товара
+    private final GoodsService goodsService;
+
+
+    // Тестовый метод - вывод всех товаров
+    @GetMapping
+    public ResponseEntity<List<ItemDTO>> testGoods() {
+        return ResponseEntity.ok(goodsService.getAllItems());
+    }
+
+    // Добавление товара
     @PostMapping()
-    public void addItem(@RequestBody ItemDTO itemDTO) {
+    public ResponseEntity<ItemDTO> addItem(@RequestBody ItemToAddDTO itemDTO) {
+        return ResponseEntity.ok(goodsService.addItem(itemDTO));
 
     }
 
-    // todo Редактирование товара
+    // Редактирование товара
     @PutMapping("")
-    public void editItem(@RequestBody ItemDTO itemDTO) {
-
+    public ResponseEntity<ItemDTO> editItem(@RequestBody ItemToAddDTO itemDTO) {
+        return ResponseEntity.ok(goodsService.editItem(itemDTO));
     }
 
-    // todo Просмотр всех существующих товаров по типу
-    @GetMapping("/type/{type_id}")
-    public void getItemsByType(@PathVariable(name = "type_id") String typeId) {
-
+    // Просмотр всех существующих товаров по типу
+    @GetMapping("/category/{category_id}")
+    public ResponseEntity<List<ItemDTO>> getItemsByCategory(@PathVariable(name = "category_id") Long categoryId) {
+        return ResponseEntity.ok(goodsService.getItemsByCategory(categoryId));
     }
 
-    // todo Просмотр товара по идентификатору
-    @GetMapping("/{id}}")
-    public void getItemById(@PathVariable(name = "id") Long id) {
+    // Просмотр товара по идентификатору
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemDTO> getItemById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(goodsService.getItemById(id));
 
     }
 
